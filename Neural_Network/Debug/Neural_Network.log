@@ -1,0 +1,8 @@
+﻿  Neural_Network.cpp
+C:\Users\Dylson\source\repos\Neural_Network\Neural_Network\Neural_Network.cpp(22,41): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
+C:\Users\Dylson\source\repos\Neural_Network\Neural_Network\Neural_Network.cpp(22,28): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+C:\Users\Dylson\source\repos\Neural_Network\Neural_Network\Neural_Network.cpp(30,41): warning C4244: 'argument': conversion from 'double' to 'const unsigned int', possible loss of data
+C:\Users\Dylson\source\repos\Neural_Network\Neural_Network\Neural_Network.cpp(30,28): warning C4244: 'argument': conversion from 'double' to 'int', possible loss of data
+  main.cpp
+  Generating Code...
+  Neural_Network.vcxproj -> C:\Users\Dylson\source\repos\Neural_Network\Debug\Neural_Network.exe

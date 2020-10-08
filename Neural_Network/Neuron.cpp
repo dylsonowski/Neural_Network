@@ -1,24 +1,26 @@
 #include <math.h>
 #include "Neuron.h"
 
-Neuron::Neuron(int val) {
+namespace neural {
+	Neuron::Neuron(double val) {
 
-	SetValue(val);
-}
+		SetValue(val);
+	}
 
-void Neuron::Activate() {
+	void Neuron::Activate() {
 
-	_activationValue = 1 / (1 - exp(-_value));
-}
+		_activationValue = 1 / (1 + exp(-_value));
+	}
 
-void Neuron::Derivate() {
+	void Neuron::Derivate() {
 
-	_derivationValue = _activationValue * (1 - _activationValue);
-}
+		_derivationValue = _activationValue * (1 - _activationValue);
+	}
 
-void Neuron::SetValue(int val) {
+	void Neuron::SetValue(double val) {
 
-	_value = val;
-	Activate();
-	Derivate();
+		_value = val;
+		Activate();
+		Derivate();
+	}
 }

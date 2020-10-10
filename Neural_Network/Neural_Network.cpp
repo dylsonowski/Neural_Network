@@ -45,6 +45,11 @@ namespace neural {
 
 			delete it;
 		}
+
+		for (auto it : _network) {
+
+			delete it;
+		}
 	}
 
 	void Neural_Network::SetInputData(std::vector<double> input) {
@@ -112,5 +117,57 @@ namespace neural {
 				SetNeuronValue(x + 1, y, temp);
 			}
 		}
+	}
+
+	void Neural_Network::BackPropagation() {
+
+		std::vector<utilities::math::Matrix*> newWeights;
+		utilities::math::Matrix gradients(1, _topology.at(_networkSize - 1), false);
+
+		for (int x = 0; x < _topology.at(_networkSize - 1); x++) {
+
+			double tempGradient = _derivedOutputErrors.at(x) * _network.at(_networkSize - 1)->GetDerivationLayer().at(x);
+			gradients.SetValue(0, x, tempGradient);
+		}
+
+		utilities::math::Matrix gradientsT = ~gradients;
+		utilities::math::Matrix activatedMatrix = _network.at(_networkSize - 2)->GetActivationMatrix();
+		utilities::math::Matrix deltaWeights = activatedMatrix * gradients;
+
+		utilities::math::Matrix temp(_topology.at(_networkSize - 2), _topology.at(_networkSize - 1), false);
+		for (int x = 0; x < _topology.at(_networkSize - 2); x++) {
+			for (int y = 0; y < _topology.at(_networkSize - 1); y++) {
+				temp.SetValue(x, y, _weightMatrices.at(_networkSize - 2)->GetValue(y, x) - deltaWeights.GetValue(x, y));
+			}
+		}
+		newWeights.push_back(new utilities::math::Matrix(temp));
+		std::cout << newWeights.at(0);
+	}
+
+	void Neural_Network::SetError() {
+
+		if (_target.size() == 0) {
+			printf("There is no target set for neural network.");
+			system("pause");
+			exit(1);
+		}
+
+		if (_target.size() != _network.at(_networkSize - 1)->GetActivationLayer().size()) {
+			printf("Target size is wrong.");
+			system("pause");
+			exit(1);
+		}
+
+		_error = 0.0f;
+		for (int x = 0; x < _target.size(); x++) {
+			double outValue = _network.at(_networkSize - 1)->GetActivationLayer().at(x);
+			double targValue = _target.at(x);
+			//double temp = 0.5 * pow(abs(outValue - targValue), 2);
+			_outputErrors.push_back(0.5 * pow(abs(targValue - outValue), 2));
+			_derivedOutputErrors.push_back(outValue - targValue);
+			_error += _outputErrors.at(x);
+		}
+
+		_errorHistory.push_back(_error);
 	}
 }

@@ -14,10 +14,17 @@ namespace neural {
 
 		void SetNeuronValue(unsigned int layerIt, unsigned int neuronIt, double value) { _network.at(layerIt)->SetValue(neuronIt, value); }
 		void SetInputData(std::vector<double> input);
+		void SetTargetData(std::vector<double> targer) { _target = targer; }
 		utilities::math::Matrix GetNeuronMatrix(unsigned int iterator, int valueType) const;
 		utilities::math::Matrix GetWeightMatrix(unsigned int iterator) const;
 		inline Layer* GetLayer(unsigned int iterator) const { return _network.at(iterator); }
+		inline double GetError() const { return _error; }
+		inline std::vector<double> GetOutputErrors() const { return _outputErrors; }
+		inline std::vector<double> GetDerivedOutputErrors() const { return _derivedOutputErrors; }
+		inline double GetPreviousError(unsigned int iterator) const { return _errorHistory.at(iterator); }
 		void FeedForword();
+		void BackPropagation();
+		void SetError();
 		std::string ToString() const {
 
 			std::stringstream stream;
@@ -41,6 +48,11 @@ namespace neural {
 		std::vector<double> _networkInput;
 		std::vector<Layer*> _network;
 		std::vector<utilities::math::Matrix*> _weightMatrices;
+		std::vector<double> _target;
+		double _error;
+		std::vector<double> _outputErrors;
+		std::vector<double> _derivedOutputErrors;
+		std::vector<double> _errorHistory;
 	};
 
 	inline std::ostream& operator<<(std::ostream& stream, const Neural_Network* net) {
